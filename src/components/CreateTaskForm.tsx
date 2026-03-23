@@ -1,7 +1,33 @@
-import {Box, TextField, RadioGroup, Text, TextArea, Button, Dialog, Flex } from "@radix-ui/themes";
+import {Box, Badge, TextField, RadioGroup, Text, TextArea, Button, Dialog, Flex } from "@radix-ui/themes";
 import { PlusIcon } from "@radix-ui/react-icons";
+import { z } from "zod";
+
+
+
+const CreateTaskSchema = {
+    title: z.string(),
+    description: z.string(),
+    status: z.enum(["to-do", "in-progress", "done"]),
+    priority: z.enum(["low", "medium", "high"])
+}
 
 export const CreateTaskForm : React.FC = () => {
+    const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (ev) => {
+        ev.preventDefault();
+        
+        const formData = new FormData(ev.currentTarget)
+        const title = formData.get("title") 
+        const description = formData.get("description") 
+        const status = formData.get("status") 
+        const priority = formData.get("priority")
+        
+        ev.currentTarget.reset()
+
+        const taskData =  CreateTaskSchema.parse({ title, description, status, priority }) ;
+        alert(JSON.stringify(taskData))
+
+    };
+
     return (
    
         <Dialog.Root>
@@ -15,7 +41,7 @@ export const CreateTaskForm : React.FC = () => {
             <Dialog.Content maxWidth="32rem" >
                 <Dialog.Title> Nova tarefa </Dialog.Title>
                 <Dialog.Description size="2" mb="4"> Adicione novas tarefas ao seu quadro. </Dialog.Description> 
-                <form >
+                <form onSubmit={handleSubmit}>
                 <Flex direction="column" gap="4">
                     <Box maxWidth="32rem">
                         <Box mb="2">
@@ -35,14 +61,12 @@ export const CreateTaskForm : React.FC = () => {
                         <Box>
                             <Text as="div" mb="2">Situação</Text>
                             <RadioGroup.Root name="status" defaultValue="to-do">
-                                <RadioGroup.Item 
-                                value="to-do"> Para Fazer
+                                <RadioGroup.Item value="to-do"> 
+                                    <Badge color = "blue" > Para Fazer </Badge> 
                                 </RadioGroup.Item>
-                                <RadioGroup.Item 
-                                value="in-progress"> Em Andamento
+                                <RadioGroup.Item value="in-progress"> <Badge color = "default" > Em Andamento </Badge>
                                 </RadioGroup.Item>
-                                <RadioGroup.Item 
-                                value="done"> Concluída
+                                <RadioGroup.Item  value="done"> <Badge color = "green" > Concluída </Badge>
                                 </RadioGroup.Item>
                             </RadioGroup.Root>
                         </Box>
@@ -50,13 +74,13 @@ export const CreateTaskForm : React.FC = () => {
                             <Text as="div" mb="2">Prioridade</Text>
                             <RadioGroup.Root name="priority" defaultValue="medium">
                                 <RadioGroup.Item 
-                                value="low"> Baixa
+                                value="low"> <Badge color = "amber" > Baixa </Badge>
                                 </RadioGroup.Item>
                                 <RadioGroup.Item 
-                                value="medium"> Média
+                                value="medium"> <Badge color = "orange" > Média </Badge>
                                 </RadioGroup.Item>
                                 <RadioGroup.Item 
-                                value="high"> Alta
+                                value="high"> <Badge color = "tomato" > Alta </Badge>
                                 </RadioGroup.Item>
                             </RadioGroup.Root>
                         </Box>
