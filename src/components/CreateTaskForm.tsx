@@ -12,6 +12,7 @@ const CreateTaskSchema = {
 }
 
 export const CreateTaskForm : React.FC = () => {
+    const { createTask } = useTasks()
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (ev) => {
         ev.preventDefault();
         
@@ -24,7 +25,7 @@ export const CreateTaskForm : React.FC = () => {
         ev.currentTarget.reset()
 
         const taskData =  CreateTaskSchema.parse({ title, description, status, priority }) ;
-        alert(JSON.stringify(taskData))
+        await createTask(taskData)
 
     };
 
