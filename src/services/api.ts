@@ -6,4 +6,31 @@ export const tasksService = {
         const response = await fetch(`${import.meta.env.VITE_API_URL}/tasks`) 
         const data: Task[] = await response.json()
         return data
-    }}
+    },
+    async createTask(attributes: Omit<Task, 'id'>): Promise<Task> {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/tasks`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(attributes)
+        })
+        const data: Task = await response.json()
+        return data
+    },
+    async updateTask(id: string, attributes: Partial<Omit<Task, 'id'>>): Promise<Task> {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(attributes)
+        })
+        const data: Task = await response.json()
+        return data
+    },
+    async deleteTask(id: string): Promise<void> {
+        await fetch(`${import.meta.env.VITE_API_URL}/tasks/${id}`, {
+            method: 'DELETE'
+        })
+    } }

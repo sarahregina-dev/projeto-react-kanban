@@ -1,12 +1,10 @@
 import { Flex, Grid, Badge, ScrollArea } from '@radix-ui/themes'
 import type { Task } from '../entities/Task'
 import { TaskCard } from './TaskCard'
-import { useContext } from 'react'
-import { TasksContext } from '../contexts/TaskContext'
-
+import { useTasks } from '../contexts/TaskContext'
 
 export const TaskBoard: React.FC = () => {
-    const { tasks } = useContext(TasksContext)
+    const { tasks } = useTasks() // <-- Corrigido para usar o hook useTasks
 
     const tasksTodo: Task[] = tasks.filter((task: Task) => task.status === 'to-do') ?? []
     const tasksInProgress: Task[] = tasks.filter((task: Task) => task.status === 'in-progress') ?? []

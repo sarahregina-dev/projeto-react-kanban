@@ -1,15 +1,14 @@
 import {Box, Badge, TextField, RadioGroup, Text, TextArea, Button, Dialog, Flex } from "@radix-ui/themes";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { z } from "zod";
+import { useTasks } from '../contexts/TaskContext'
 
-
-
-const CreateTaskSchema = {
+const CreateTaskSchema = z.object({
     title: z.string(),
     description: z.string(),
     status: z.enum(["to-do", "in-progress", "done"]),
     priority: z.enum(["low", "medium", "high"])
-}
+})
 
 export const CreateTaskForm : React.FC = () => {
     const { createTask } = useTasks()
@@ -65,7 +64,7 @@ export const CreateTaskForm : React.FC = () => {
                                 <RadioGroup.Item value="to-do"> 
                                     <Badge color = "blue" > Para Fazer </Badge> 
                                 </RadioGroup.Item>
-                                <RadioGroup.Item value="in-progress"> <Badge color = "default" > Em Andamento </Badge>
+                                <RadioGroup.Item value="in-progress"> <Badge color = "gray" > Em Andamento </Badge>
                                 </RadioGroup.Item>
                                 <RadioGroup.Item  value="done"> <Badge color = "green" > Concluída </Badge>
                                 </RadioGroup.Item>
